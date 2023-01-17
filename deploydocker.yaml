@@ -1,0 +1,47 @@
+---
+- name: Install Docker 
+  hosts: 18.233.148.177
+  become: yes
+  tasks:
+    - name: Install Docker
+      yum: 
+        name: docker
+        update_cache: yes 
+        state : present
+
+- name: Install Docker-compose    
+  hosts: 18.233.148.177
+  tasks:
+    - name: Install Docker-compose
+      get_url: 
+        url: https://github.com/docker/compose/releases/tag/v2.15.1
+        dest: /usr/local/bin/docker-compose
+        mode: +x
+
+- name: Start Docker containers
+  hosts: 18.233.148.177
+  become: yes
+  tasks: 
+    - name: Start docker daemon
+      systemd:
+        name: docker
+        state: started
+
+- name: Add ec2-user to docker group
+  hosts: 18.233.148.177
+  become: yes
+  tasks:
+    - name: Add ec2-user to the docker group
+      user:
+       name: ec2-user
+       groups: docker 
+- name: Reconnect to server session
+  meta: reset_connection
+
+  
+          
+
+
+
+  
+
