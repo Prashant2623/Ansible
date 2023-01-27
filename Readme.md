@@ -1,4 +1,4 @@
-Deploy Docker and Docker-compose on EC2 server using Ansible Playbook
+Deploy Docker and Docker-compose on server using Ansible Playbook
 
 Steps : 
 1) create AWS EC2 instance
