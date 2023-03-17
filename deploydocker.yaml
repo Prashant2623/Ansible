@@ -37,11 +37,3 @@
        groups: docker 
 - name: Reconnect to server session
   meta: reset_connection
-
-  
-          
-
-
-
-  
-
