@@ -14,7 +14,7 @@
   tasks:
     - name: Install Docker-compose
       get_url: 
-        url: https://github.com/docker/compose/releases/tag/v2.15.1
+        url: https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
         mode: +x
 
