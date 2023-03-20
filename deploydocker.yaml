@@ -4,6 +4,8 @@
   become: yes
   tasks:
     - name: Install Docker
+      vars:
+          ansible_python_interpreter : /usr/bin/python
       yum: 
         name: docker
         update_cache: yes 
