@@ -1,1 +1,1 @@
-18.233.148.177 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_user=ec2-user
+3.234.227.94 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_user=ec2-user
