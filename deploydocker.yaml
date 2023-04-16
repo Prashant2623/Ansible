@@ -1,47 +1,48 @@
 ---
-- name: Install Docker 
-  hosts: 18.233.148.177
-  become: yes
+- name: Install docker
+  hosts: docker-server 
+  gather_facts: False
   tasks:
-    - name: Install Docker
-      vars:
-          ansible_python_interpreter: /usr/bin/python
-      yum: 
+    - name: update packages 
+      ansible.builtin.dnf:  
+         name: "*"
+         state: latest
+    - name: Install docker 
+      ansible.builtin.dnf:  
+         name: 'docker'
+         state: latest
+         update_cache: yes
+
+- name: Start docker
+  hosts: docker-server 
+  gather_facts: False
+  tasks:
+    - name: start docker daemon
+      systemd: 
         name: docker
-        update_cache: yes 
-        state : present
+        state: started
+         
+- name: Add ec2-user to the docker group 
+  hosts: docker-server 
+  gather_facts: False
+  tasks:
+    - name: add ec2-user to docker group
+      user: 
+        name: ec2-user
+        groups: docker 
+        append: yes 
+    - name: Reconnect to the server
+      meta: reset_connection
 
 - name: Install Docker-compose    
-  hosts: 18.233.148.177
+  hosts: docker-server
   tasks:
     - name: Install Docker-compose
       get_url: 
         url: https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
-        mode: +x
+        mode: +x    
+    
 
-- name: Start Docker containers
-  hosts: 18.233.148.177
-  become: yes
-  tasks: 
-    - name: Start docker daemon
-      systemd:
-        name: docker
-        state: started
 
-- name: Add ec2-user to docker group
-  hosts: 18.233.148.177
-  become: yes
-  tasks:
-    - name: Add ec2-user to the docker group
-      user:
-       name: ec2-user
-       groups: docker 
-- name: Reconnect to server session
-  meta: reset_connection
 
-- name: Test docker pull
-  hosts: 18.233.148.177
-  tasks:
-    - name: Pull Nginx
-      command: docker pull nginx
